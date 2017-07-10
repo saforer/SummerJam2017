@@ -79,6 +79,16 @@ public class Player : MonoBehaviour {
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         bool temp = sr.flipX;
         sr.flipX = !temp;
+        flipFireballPlace();
+    }
+
+    void flipFireballPlace()
+    {
+        Vector3 posToGo = Vector3.zero;
+
+        posToGo.x = (facingRight?1:-1) * .44f;
+        posToGo.y = -.2f;
+        fireballPosition.transform.localPosition = posToGo;
     }
 
     void JumpMehrio()

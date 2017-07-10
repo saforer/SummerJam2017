@@ -51,7 +51,7 @@ public class LevelImport : MonoBehaviour
                     
                     if (objHash["type"].Equals("Ground"))
                     {
-                        Debug.Log(objHash["id"] + " " + objHash["type"] + " " + objHash["x"] + " " + objHash["y"] + " " + objHash["width"] + " " + objHash["height"]);
+                        //Debug.Log(objHash["id"] + " " + objHash["type"] + " " + objHash["x"] + " " + objHash["y"] + " " + objHash["width"] + " " + objHash["height"]);
                         GameObject levelBox = new GameObject(objHash["type"].ToString());
                         levelBox.name = objHash["id"].ToString();
                         Vector3 levelCenter = new Vector3(0, 0, 0);
