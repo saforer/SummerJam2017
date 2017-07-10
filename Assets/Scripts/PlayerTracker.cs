@@ -7,6 +7,7 @@ public class PlayerTracker : MonoBehaviour {
     public Transform player;
     public float speed;
     public float edge;
+    public float leftEdge;
 
 	// Use this for initialization
 	void Start () {
@@ -19,16 +20,13 @@ public class PlayerTracker : MonoBehaviour {
         float percentOnScreen = screenPos.x / cam.pixelWidth;
         percentOnScreen -= .50f;
         percentOnScreen *= 2f;
-        Debug.Log("target is " + percentOnScreen + "%");
-
-
 
         if (percentOnScreen >= edge)
         {
             transform.position += new Vector3(speed * percentOnScreen, 0, 0);
         } else if (percentOnScreen <= -edge)
         {
-            if (transform.position.x > 1.18f) transform.position += new Vector3(speed * percentOnScreen * percentOnScreen * percentOnScreen, 0, 0);
+            if (transform.position.x > leftEdge) transform.position += new Vector3(speed * percentOnScreen * percentOnScreen * percentOnScreen, 0, 0);
         }
         
 	}
