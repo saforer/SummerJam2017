@@ -6,6 +6,7 @@ public class Player : MonoBehaviour {
 
     public float speed;
     public float jumpStrength;
+    
 
     bool grounded = false;
 
@@ -16,6 +17,7 @@ public class Player : MonoBehaviour {
     public Animator anim;
     public BoxCollider2D jumpBox;
     public GameObject fireballPosition;
+    public GameObject fireball;
 
     private PlayerWeaponStates currentMehrio = PlayerWeaponStates.big;
     
@@ -54,6 +56,11 @@ public class Player : MonoBehaviour {
         {
             JumpMehrio();
         }
+
+        if (Input.GetKey(KeyCode.Z))
+        {
+            FireFireball();
+        }
     }
 
     void AnimationUpdate()
@@ -72,6 +79,21 @@ public class Player : MonoBehaviour {
         }
 
         anim.SetBool("grounded", grounded);
+
+        if (currentMehrio.Equals(PlayerWeaponStates.fireball))
+        {
+            anim.SetBool("fireMario", true);
+        } else
+        {
+            anim.SetBool("fireMario", false);
+        }
+    }
+
+    void FireFireball()
+    {
+        GameObject bullet = (GameObject)Instantiate(fireball, fireballPosition.transform.position, Quaternion.identity);
+        bullet.GetComponent<Projectile>().right = facingRight;
+        bullet.GetComponent<Projectile>().Fire();
     }
 
     void FlipSprite()
@@ -98,6 +120,21 @@ public class Player : MonoBehaviour {
             jumped = true;
             Vector2 jVector = new Vector2(0, jumpStrength);
             rb.AddForce(jVector);
+        }
+    }
+
+    public void fireFlower()
+    {
+        switch (currentMehrio)
+        {
+            case PlayerWeaponStates.big:
+                currentMehrio = PlayerWeaponStates.fireball;
+                break;
+            case PlayerWeaponStates.fireball:
+                break;
+            case PlayerWeaponStates.small:
+                currentMehrio = PlayerWeaponStates.big;
+                break;
         }
     }
 }
