@@ -13,6 +13,11 @@ public class LevelImport : MonoBehaviour
     public TextAsset dataAsset;
     public List<BoxCollider2D> collisionBoxList = new List<BoxCollider2D>();
 
+
+
+    public GameObject coin;
+    public GameObject coinBox;
+
     // Use this for initialization
     void Start()
     {
@@ -91,6 +96,57 @@ public class LevelImport : MonoBehaviour
                         levelBox.layer = 10;
                         levelBox.transform.SetParent(this.transform);
                         levelBox.layer = 9;
+                    }
+
+                    if (objHash["type"].Equals("Coin"))
+                    {
+                        float xInTiles = float.Parse(objHash["x"].ToString());
+                        float yInTiles = float.Parse(objHash["y"].ToString());
+
+                        yInTiles *= -1f;
+
+                        xInTiles *= 1.0f / 16.0f;
+                        yInTiles *= 1.0f / 16.0f;
+                        xInTiles *= .8f;
+                        yInTiles *= .8f;
+
+                        yInTiles += 13f;
+                        yInTiles -= .65f;
+
+
+                        Instantiate(coin, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                    }
+
+                    if (objHash["type"].Equals("CoinBox"))
+                    {
+                        float xInTiles = float.Parse(objHash["x"].ToString());
+                        float yInTiles = float.Parse(objHash["y"].ToString());
+
+                        yInTiles *= -1f;
+
+                        xInTiles *= 1.0f / 16.0f;
+                        yInTiles *= 1.0f / 16.0f;
+                        xInTiles *= .8f;
+                        yInTiles *= .8f;
+
+                        yInTiles += 13f;
+                        yInTiles -= .65f;
+
+
+                        GameObject _coinBox = Instantiate(coinBox, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                        switch(objHash["name"].ToString())
+                        {
+                            case "FireFlower":
+                                _coinBox.GetComponent<CoinBlock>().heldItem = Items.FireFlower;
+                                break;
+                            case "Coin":
+                                _coinBox.GetComponent<CoinBlock>().heldItem = Items.Coin;
+                                break;
+                            case "Mushroom":
+                                _coinBox.GetComponent<CoinBlock>().heldItem = Items.Mushroom;
+                                break;
+                        }
+
                     }
                 }
             }

@@ -13,13 +13,17 @@ public class Player : MonoBehaviour {
     bool jumped = false;
     bool facingRight = true;
 
+
+    public float deathJumpForce;
+
     public Rigidbody2D rb;
     public Animator anim;
     public BoxCollider2D jumpBox;
     public GameObject fireballPosition;
     public GameObject fireball;
+    public GameObject deadMario;
 
-    private PlayerWeaponStates currentMehrio = PlayerWeaponStates.big;
+    private PlayerWeaponStates currentMehrio = PlayerWeaponStates.small;
     
 
 	// Use this for initialization
@@ -52,14 +56,29 @@ public class Player : MonoBehaviour {
     {
         rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, rb.velocity.y);
 
-        if (Input.GetAxis ("Vertical") > 0.3f)
+        if (transform.position.x <= 0)
+        {
+            transform.position = new Vector2(0, transform.position.y);
+        }
+
+        if ((transform.position.y <= -1f))
+        {
+            Die();
+        }
+
+
+        //if (Input.GetAxis ("Vertical") > 0.3f)
+        if (Input.GetKey(KeyCode.Z))
         {
             JumpMehrio();
         }
 
-        if (Input.GetKey(KeyCode.Z))
+        if (Input.GetKey(KeyCode.X))
         {
-            FireFireball();
+            if (currentMehrio == PlayerWeaponStates.fireball)
+            {
+                FireFireball();
+            }
         }
     }
 
@@ -80,20 +99,28 @@ public class Player : MonoBehaviour {
 
         anim.SetBool("grounded", grounded);
 
-        if (currentMehrio.Equals(PlayerWeaponStates.fireball))
+        if (currentMehrio == PlayerWeaponStates.small)
         {
-            anim.SetBool("fireMario", true);
+            anim.SetLayerWeight(anim.GetLayerIndex("Small Layer"), 1);
+            anim.SetLayerWeight(anim.GetLayerIndex("Fire Layer"), 0);
+            anim.SetLayerWeight(anim.GetLayerIndex("Base Layer"), 0);
+        } else if (currentMehrio.Equals(PlayerWeaponStates.fireball))
+        {
+            anim.SetLayerWeight(anim.GetLayerIndex("Small Layer"), 0);
+            anim.SetLayerWeight(anim.GetLayerIndex("Fire Layer"), 1);
+            anim.SetLayerWeight(anim.GetLayerIndex("Base Layer"), 0);
         } else
         {
-            anim.SetBool("fireMario", false);
+            anim.SetLayerWeight(anim.GetLayerIndex("Small Layer"), 0);
+            anim.SetLayerWeight(anim.GetLayerIndex("Fire Layer"), 0);
+            anim.SetLayerWeight(anim.GetLayerIndex("Base Layer"), 1);
         }
     }
 
     void FireFireball()
     {
         GameObject bullet = (GameObject)Instantiate(fireball, fireballPosition.transform.position, Quaternion.identity);
-        bullet.GetComponent<Projectile>().right = facingRight;
-        bullet.GetComponent<Projectile>().Fire();
+        bullet.GetComponent<Projectile>().Fire(facingRight);
     }
 
     void FlipSprite()
@@ -135,6 +162,25 @@ public class Player : MonoBehaviour {
             case PlayerWeaponStates.small:
                 currentMehrio = PlayerWeaponStates.big;
                 break;
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("WELP I'm dead!");
+        //Make marioclone
+        GameObject corpse = (GameObject)Instantiate(deadMario, transform.position, Quaternion.identity);
+        corpse.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, deathJumpForce));
+        Destroy(gameObject);
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.transform.tag == "Coin")
+        {
+            Debug.Log("COIN GET!!!!!");
+            Destroy(col.gameObject);
         }
     }
 }
