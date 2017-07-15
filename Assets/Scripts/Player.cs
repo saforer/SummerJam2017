@@ -16,19 +16,29 @@ public class Player : MonoBehaviour {
 
     public float deathJumpForce;
 
-    public Rigidbody2D rb;
-    public Animator anim;
+    Rigidbody2D rb;
+    Animator anim;
     public BoxCollider2D jumpBox;
     public GameObject fireballPosition;
     public GameObject fireball;
     public GameObject deadMario;
+    GameObject godObject;
 
-    private PlayerWeaponStates currentMehrio = PlayerWeaponStates.small;
+
+    bool endingLevel = false;
+    bool flagpoleJump = false;
+    public float endTimer;
+    float endCount = 0f;
+
+    public PlayerWeaponStates currentMehrio = PlayerWeaponStates.small;
     
 
 	// Use this for initialization
 	void Start () {
-        
+        godObject = GameObject.FindGameObjectWithTag("GodObject");
+        currentMehrio = godObject.GetComponent<GodScript>().lastMehrioState;
+        rb = gameObject.GetComponent<Rigidbody2D>();
+        anim = gameObject.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -36,9 +46,14 @@ public class Player : MonoBehaviour {
 
         HitboxUpdate();
 
-        ControlUpdate();
+        if (!endingLevel)
+        {
+            ControlUpdate();
+        }
         
         AnimationUpdate();
+
+        EndingLevelUpdate();
 	}
 
     void HitboxUpdate()
@@ -56,14 +71,19 @@ public class Player : MonoBehaviour {
     {
         rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, rb.velocity.y);
 
-        if (transform.position.x <= 0)
+        if (transform.position.x <= .25f)
         {
-            transform.position = new Vector2(0, transform.position.y);
+            transform.position = new Vector2(.25f, transform.position.y);
         }
 
         if ((transform.position.y <= -1f))
         {
             Die();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            godObject.GetComponent<GodScript>().RestartLevel();
         }
 
 
@@ -84,17 +104,22 @@ public class Player : MonoBehaviour {
 
     void AnimationUpdate()
     {
-        anim.SetFloat("speed", Mathf.Abs(Input.GetAxis("Horizontal")));
-        
-        //Facing direction
-        if (facingRight && (Input.GetAxis("Horizontal") < 0))
+        if (!endingLevel)
         {
-            facingRight = false;
-            FlipSprite();
-        } else if (!facingRight && (Input.GetAxis("Horizontal") > 0))
-        {
-            facingRight = true;
-            FlipSprite();
+            anim.SetFloat("speed", Mathf.Abs(Input.GetAxis("Horizontal")));
+
+
+            //Facing direction
+            if (facingRight && (Input.GetAxis("Horizontal") < 0))
+            {
+                facingRight = false;
+                FlipSprite();
+            }
+            else if (!facingRight && (Input.GetAxis("Horizontal") > 0))
+            {
+                facingRight = true;
+                FlipSprite();
+            }
         }
 
         anim.SetBool("grounded", grounded);
@@ -114,6 +139,47 @@ public class Player : MonoBehaviour {
             anim.SetLayerWeight(anim.GetLayerIndex("Small Layer"), 0);
             anim.SetLayerWeight(anim.GetLayerIndex("Fire Layer"), 0);
             anim.SetLayerWeight(anim.GetLayerIndex("Base Layer"), 1);
+        }
+    }
+
+    void EndingLevelUpdate()
+    {
+        if (endingLevel)
+        {
+            if (transform.position.y > 2.9f)
+            {
+                //move down
+                transform.position = new Vector2(transform.position.x, transform.position.y - 1.0f);
+                if (transform.position.y < 2.9f)
+                {
+                    transform.position = new Vector2(transform.position.x, 2.9f);
+                }
+            }
+            else if (!flagpoleJump)
+            {
+                Debug.Log("Flagpole Jump");
+                transform.position = new Vector2(transform.position.x + 1.6f, transform.position.y);
+                gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                flagpoleJump = true;
+            }
+            else if (endCount < endTimer)
+            {
+                if (endCount > (endTimer - 1.0f))
+                {
+                    gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                    Debug.Log("Should be moving right");
+                    rb.simulated = true;
+                    rb.velocity = new Vector2(speed, rb.velocity.y);
+                }
+                endCount += Time.deltaTime;
+            }
+            else
+            {
+                rb.simulated = false;
+                //Give the godobject our state
+                godObject.GetComponent<GodScript>().lastMehrioState = currentMehrio;
+                godObject.GetComponent<GodScript>().NextLevel();
+            }
         }
     }
 
@@ -145,12 +211,25 @@ public class Player : MonoBehaviour {
         if (grounded && !jumped)
         {
             jumped = true;
-            Vector2 jVector = new Vector2(0, jumpStrength);
-            rb.AddForce(jVector);
+            Vector2 jVector = new Vector2(rb.velocity.x, jumpStrength);
+            rb.velocity = jVector;
         }
     }
 
-    public void fireFlower()
+    void mushroom()
+    {
+        switch (currentMehrio)
+        {
+            case PlayerWeaponStates.big:
+            case PlayerWeaponStates.fireball:
+                break;
+            case PlayerWeaponStates.small:
+                currentMehrio = PlayerWeaponStates.big;
+                break;
+        }
+    }
+
+    void fireFlower()
     {
         switch (currentMehrio)
         {
@@ -168,6 +247,7 @@ public class Player : MonoBehaviour {
     void Die()
     {
         Debug.Log("WELP I'm dead!");
+        godObject.GetComponent<GodScript>().lastMehrioState = PlayerWeaponStates.small;
         //Make marioclone
         GameObject corpse = (GameObject)Instantiate(deadMario, transform.position, Quaternion.identity);
         corpse.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, deathJumpForce));
@@ -182,6 +262,34 @@ public class Player : MonoBehaviour {
             Debug.Log("COIN GET!!!!!");
             Destroy(col.gameObject);
         }
+
+        if (col.transform.tag == "Mushroom")
+        {
+            mushroom();
+            Destroy(col.gameObject);
+        }
+
+        if (col.transform.tag == "FireFlower")
+        {
+            fireFlower();
+            Destroy(col.gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.transform.tag == "Goal")
+        {
+            EndLevel();
+        }
+    }
+
+
+    void EndLevel()
+    {
+        rb.velocity = Vector2.zero;
+        endingLevel = true;
+        rb.simulated = false;
     }
 }
 

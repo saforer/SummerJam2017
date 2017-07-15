@@ -17,6 +17,9 @@ public class LevelImport : MonoBehaviour
 
     public GameObject coin;
     public GameObject coinBox;
+    public GameObject goal;
+    public GameObject player;
+    public GameObject brick;
 
     // Use this for initialization
     void Start()
@@ -85,7 +88,6 @@ public class LevelImport : MonoBehaviour
 
                         yInTiles += 13f;
 
-                        xInTiles -= .4f;
                         yInTiles -= .2f;
 
 
@@ -112,9 +114,11 @@ public class LevelImport : MonoBehaviour
 
                         yInTiles += 13f;
                         yInTiles -= .65f;
+                        xInTiles += .4f;
 
 
-                        Instantiate(coin, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                        GameObject _coin = Instantiate(coin, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                        _coin.transform.parent = this.transform;
                     }
 
                     if (objHash["type"].Equals("CoinBox"))
@@ -132,13 +136,21 @@ public class LevelImport : MonoBehaviour
                         yInTiles += 13f;
                         yInTiles -= .65f;
 
+                        xInTiles += .4f;
+
 
                         GameObject _coinBox = Instantiate(coinBox, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                        _coinBox.transform.SetParent(this.transform);
                         switch(objHash["name"].ToString())
                         {
+                            case "InvisCoin":
+                                _coinBox.GetComponent<CoinBlock>().heldItem = Items.Coin;
+                                _coinBox.GetComponent<Animator>().SetBool("invis", true);
+                                break;
                             case "FireFlower":
                                 _coinBox.GetComponent<CoinBlock>().heldItem = Items.FireFlower;
                                 break;
+                            default:
                             case "Coin":
                                 _coinBox.GetComponent<CoinBlock>().heldItem = Items.Coin;
                                 break;
@@ -146,11 +158,60 @@ public class LevelImport : MonoBehaviour
                                 _coinBox.GetComponent<CoinBlock>().heldItem = Items.Mushroom;
                                 break;
                         }
-
                     }
+
+                    if (objHash["type"].Equals("Brick"))
+                    {
+                        float xInTiles = float.Parse(objHash["x"].ToString());
+                        float yInTiles = float.Parse(objHash["y"].ToString());
+
+                        yInTiles *= -1f;
+
+                        xInTiles *= 1.0f / 16.0f;
+                        yInTiles *= 1.0f / 16.0f;
+                        xInTiles *= .8f;
+                        yInTiles *= .8f;
+
+                        yInTiles += 13f;
+                        yInTiles -= .65f;
+
+                        xInTiles += .4f;
+
+
+                        GameObject _brick = Instantiate(brick, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                        _brick.transform.parent = this.transform;
+                    }
+
+                    if (objHash["type"].Equals("Goal"))
+                    {
+                        float xInTiles = float.Parse(objHash["x"].ToString());
+                        float yInTiles = float.Parse(objHash["y"].ToString());
+
+                        yInTiles *= -1f;
+
+                        xInTiles *= 1.0f / 16.0f;
+                        yInTiles *= 1.0f / 16.0f;
+                        xInTiles *= .8f;
+                        yInTiles *= .8f;
+
+                        yInTiles += 13f;
+                        yInTiles -= .65f;
+                        yInTiles -= 4.75f;
+
+                        xInTiles += .4f;
+
+
+                        Instantiate(goal, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                    }
+
+
                 }
             }
         }
+
+        GameObject p = Instantiate(player, new Vector2(1f, 2.9f), Quaternion.identity);
+
+
     }
 
     public int GetRoomHeight()

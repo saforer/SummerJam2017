@@ -31,6 +31,9 @@ public class PlayerTracker : MonoBehaviour {
             {
                 if (transform.position.x > leftEdge) transform.position += new Vector3(speed * percentOnScreen * percentOnScreen * percentOnScreen, 0, 0);
             }
-        }        
+        } else
+        {
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+        }
 	}
 }
