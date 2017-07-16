@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,7 +34,10 @@ public class PlayerTracker : MonoBehaviour {
             }
         } else
         {
-            player = GameObject.FindGameObjectWithTag("Player").transform;
+            try
+            {
+                player = GameObject.FindGameObjectWithTag("Player").transform;
+            } catch (Exception e) { }
         }
 	}
 }

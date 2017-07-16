@@ -57,7 +57,7 @@ public class LevelImport : MonoBehaviour
                     Dictionary<string, object> objHash = (Dictionary<string, object>)objectList[j];
 
                     
-                    if (objHash["type"].Equals("Ground"))
+                    if (objHash["type"].Equals("Ground") || objHash["type"].Equals(""))
                     {
                         //Debug.Log(objHash["id"] + " " + objHash["type"] + " " + objHash["x"] + " " + objHash["y"] + " " + objHash["width"] + " " + objHash["height"]);
                         GameObject levelBox = new GameObject(objHash["type"].ToString());

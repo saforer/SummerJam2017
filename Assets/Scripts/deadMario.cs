@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class deadMario : MonoBehaviour {
 
+    public GodScript gs;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -13,8 +15,7 @@ public class deadMario : MonoBehaviour {
 	void Update () {
 		if (transform.position.y < -1f)
         {
-            SendMessage("PlayerDied");
-            Debug.Log("Ok start the reset");
+            gs.RestartCountdown();
             Destroy(gameObject);
         }
 	}

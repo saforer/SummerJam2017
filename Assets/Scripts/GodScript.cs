@@ -7,6 +7,9 @@ public class GodScript : MonoBehaviour {
     bool isReal = false;
     public bool restarting = false;
 
+    float restartTimer = 5f;
+    float restartCount = 0;
+
     public void Start()
     {
         if (GameObject.FindGameObjectsWithTag("GodObject").Length>1)
@@ -21,9 +24,29 @@ public class GodScript : MonoBehaviour {
         DontDestroyOnLoad(this);
     }
 
-    public void RestartLevel()
+    private void Update()
+    {
+        if (restarting)
+        {
+            if (restartCount < restartTimer)
+            {
+                restartCount += Time.deltaTime;
+            }
+            else
+            {
+                restartCount = 0f;
+                RestartLevel();
+            }
+        }
+    }
+
+    public void RestartCountdown()
     {
         restarting = true;
+    }
+
+    public void RestartLevel()
+    {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Game", UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 

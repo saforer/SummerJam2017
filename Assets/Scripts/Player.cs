@@ -60,7 +60,8 @@ public class Player : MonoBehaviour {
     {
         bool temp = false;
         if (!grounded) temp = false;
-        grounded = jumpBox.IsTouchingLayers(LayerMask.GetMask("Ground"));
+        //grounded = jumpBox.IsTouchingLayers(LayerMask.GetMask("Ground"));
+        grounded = gameObject.GetComponent<BoxCollider2D>().IsTouchingLayers(LayerMask.GetMask("Ground"));
         if (!temp && grounded)
         {
             jumped = false;
@@ -246,11 +247,11 @@ public class Player : MonoBehaviour {
 
     void Die()
     {
-        Debug.Log("WELP I'm dead!");
         godObject.GetComponent<GodScript>().lastMehrioState = PlayerWeaponStates.small;
         //Make marioclone
         GameObject corpse = (GameObject)Instantiate(deadMario, transform.position, Quaternion.identity);
         corpse.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, deathJumpForce));
+        corpse.GetComponent<deadMario>().gs = godObject.GetComponent<GodScript>();
         Destroy(gameObject);
     }
 
