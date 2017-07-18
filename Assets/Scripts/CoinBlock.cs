@@ -86,8 +86,7 @@ public class CoinBlock : MonoBehaviour {
             pos = .8f;
         }
 
-        GameObject item = (GameObject) Instantiate(toSpawn, new Vector2(transform.position.x, transform.position.y + pos), Quaternion.identity);
-        //item.transform.parent = gameObject.transform;
+        Instantiate(toSpawn, new Vector2(transform.position.x, transform.position.y + pos), Quaternion.identity);
     }
 }
 

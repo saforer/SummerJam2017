@@ -5,10 +5,16 @@ using UnityEngine;
 public class GodScript : MonoBehaviour {
     public PlayerWeaponStates lastMehrioState = PlayerWeaponStates.fireball;
     bool isReal = false;
-    public bool restarting = false;
+    bool restarting = false;
 
     float restartTimer = 5f;
     float restartCount = 0;
+
+    
+
+    public List<Sprite> levelPic = new List<Sprite>();
+    public List<TextAsset> levelData = new List<TextAsset>();
+    int currentLevel = 0;
 
     public void Start()
     {
@@ -22,6 +28,8 @@ public class GodScript : MonoBehaviour {
 
         isReal = true;
         DontDestroyOnLoad(this);
+
+
     }
 
     private void Update()
@@ -40,6 +48,12 @@ public class GodScript : MonoBehaviour {
         }
     }
 
+    public void GetRoomData(LevelImport li)
+    {
+        li.dataAsset = levelData[currentLevel];
+        li.currentSprite = levelPic[currentLevel];
+    }
+
     public void RestartCountdown()
     {
         restarting = true;
@@ -50,13 +64,9 @@ public class GodScript : MonoBehaviour {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Game", UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 
-    private void OnLevelWasLoaded(int level)
-    {
-        restarting = false;
-    }
-
     public void NextLevel()
     {
+        currentLevel++;
         RestartLevel();
     }
 

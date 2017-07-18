@@ -7,35 +7,52 @@ public class LevelImport : MonoBehaviour
     public int _roomWidth;
     public int _roomHeight;
     public int _tileSize;
-    public string roomName;
     public Vector2 MinimapRoomCoordinates;
-    public string roomFile;
+
     public TextAsset dataAsset;
+    public Sprite currentSprite;
+    string roomName;
+    string roomFile;
     public List<BoxCollider2D> collisionBoxList = new List<BoxCollider2D>();
 
 
-
+    GodScript gs;
+    SpriteRenderer sr;
+    
     public GameObject coin;
     public GameObject coinBox;
     public GameObject goal;
     public GameObject player;
     public GameObject brick;
 
-    // Use this for initialization
-    void Start()
+    private void Start()
     {
-        //TextAsset dataAsset = (TextAsset) Resources.Load (roomFile, typeof(TextAsset));
+        gs = GameObject.FindGameObjectWithTag("GodObject").GetComponent<GodScript>();
+        sr = gameObject.GetComponent<SpriteRenderer>();
 
+        GetLevel();
+        LoadLevel();
+    }
+
+
+    void GetLevel()
+    {
+        gs.GetRoomData(this);
+    }
+
+
+    void LoadLevel()
+    {
+
+        //First we need the sprite to be right
+        sr.sprite = currentSprite;
+
+        //Then we need the right objects
         if (!dataAsset) Debug.Log("No room file!");
 
         Dictionary<string, object> hash = dataAsset.text.dictionaryFromJson();
-
-        _roomWidth = int.Parse(hash["width"].ToString());
-        _roomHeight = int.Parse(hash["height"].ToString());
-        _tileSize = int.Parse(hash["tilewidth"].ToString());
-
-        string[] pathSplit = roomFile.Split(new char[] { '/' });
-        roomName = pathSplit[pathSplit.Length - 1];
+        
+        roomFile = dataAsset.ToString();
 
         List<object> layersList = (List<object>)hash["layers"];
 
@@ -47,8 +64,7 @@ public class LevelImport : MonoBehaviour
 
             if (layerHash["name"].ToString().Equals("ObjectJson"))
             {
-
-                // Load object data if it exists...
+                
                 List<object> objectList = (List<object>)layerHash["objects"];
 
                 for (int j = 0; j < objectList.Count; j++)
@@ -62,9 +78,6 @@ public class LevelImport : MonoBehaviour
                         //Debug.Log(objHash["id"] + " " + objHash["type"] + " " + objHash["x"] + " " + objHash["y"] + " " + objHash["width"] + " " + objHash["height"]);
                         GameObject levelBox = new GameObject(objHash["type"].ToString());
                         levelBox.name = objHash["id"].ToString();
-                        Vector3 levelCenter = new Vector3(0, 0, 0);
-                        Vector3 levelSize = new Vector3(1, 1, 1);
-                        Vector3 levelBoxSize = new Vector2(1, 1);
 
                         float xInTiles = float.Parse(objHash["x"].ToString());
                         float yInTiles = float.Parse(objHash["y"].ToString());
@@ -92,7 +105,6 @@ public class LevelImport : MonoBehaviour
 
 
                         levelBox.transform.position = new Vector3(xInTiles, yInTiles);
-                        levelBox.transform.localScale = levelSize;
                         levelBox.AddComponent<BoxCollider2D>();
                         levelBox.GetComponent<BoxCollider2D>().size = new Vector2(widthInTiles, heightInTiles);
                         levelBox.layer = 10;
@@ -210,18 +222,12 @@ public class LevelImport : MonoBehaviour
         }
 
         GameObject p = Instantiate(player, new Vector2(1f, 2.9f), Quaternion.identity);
-
+        p.transform.SetParent(gameObject.transform);
 
     }
 
-    public int GetRoomHeight()
+    void DestroyLevel()
     {
-        return _roomHeight * _tileSize;
-    }
 
-    public int GetRoomWidth()
-    {
-        return _roomWidth * _tileSize;
     }
-
 }

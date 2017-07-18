@@ -21,7 +21,19 @@ public class Mushroom : MonoBehaviour {
         if (turnBox.IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
             goingRight = !goingRight;
-            turnBox.gameObject.transform.localPosition = new Vector2((goingRight? .4f : -.4f), 0);
+            //turnBox.gameObject.transform.localPosition = new Vector2((goingRight? .4f : -.4f), 0);
+
+            float x;
+
+            if (goingRight)
+            {
+                x = .4f;
+            } else
+            {
+                x = -.4f;
+            }
+
+            turnBox.gameObject.transform.localPosition = new Vector2(x, 0);
         }
         rb.velocity = new Vector2(2f * (goingRight ? 1 : -1), rb.velocity.y);
     }
