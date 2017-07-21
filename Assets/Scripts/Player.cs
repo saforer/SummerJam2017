@@ -13,7 +13,6 @@ public class Player : MonoBehaviour {
     bool jumped = false;
     bool facingRight = true;
 
-
     public float deathJumpForce;
 
     Rigidbody2D rb;
@@ -24,11 +23,13 @@ public class Player : MonoBehaviour {
     public GameObject deadMario;
     GameObject godObject;
 
-
+    float hurtCountdown = 0f;
+    public float hurtTimer;
     bool endingLevel = false;
     bool flagpoleJump = false;
     public float endTimer;
     float endCount = 0f;
+    public float extra;
 
     public PlayerWeaponStates currentMehrio = PlayerWeaponStates.small;
     
@@ -105,6 +106,11 @@ public class Player : MonoBehaviour {
 
     void AnimationUpdate()
     {
+        if (hurtCountdown > 0f)
+        {
+            hurtCountdown -= Time.deltaTime;
+        }
+
         if (!endingLevel)
         {
             anim.SetFloat("speed", Mathf.Abs(Input.GetAxis("Horizontal")));
@@ -158,7 +164,6 @@ public class Player : MonoBehaviour {
             }
             else if (!flagpoleJump)
             {
-                Debug.Log("Flagpole Jump");
                 transform.position = new Vector2(transform.position.x + 1.6f, transform.position.y);
                 gameObject.GetComponent<SpriteRenderer>().flipX = true;
                 flagpoleJump = true;
@@ -168,7 +173,6 @@ public class Player : MonoBehaviour {
                 if (endCount > (endTimer - 1.0f))
                 {
                     gameObject.GetComponent<SpriteRenderer>().flipX = false;
-                    Debug.Log("Should be moving right");
                     rb.simulated = true;
                     rb.velocity = new Vector2(speed, rb.velocity.y);
                 }
@@ -180,6 +184,7 @@ public class Player : MonoBehaviour {
                 //Give the godobject our state
                 godObject.GetComponent<GodScript>().lastMehrioState = currentMehrio;
                 godObject.GetComponent<GodScript>().NextLevel();
+                Destroy(gameObject);
             }
         }
     }
@@ -245,6 +250,26 @@ public class Player : MonoBehaviour {
         }
     }
 
+    void Hurt()
+    {
+        if (hurtCountdown <= 0f)
+        {
+            switch (currentMehrio)
+            {
+                case PlayerWeaponStates.big:
+                    currentMehrio = PlayerWeaponStates.small;
+                    break;
+                case PlayerWeaponStates.fireball:
+                    currentMehrio = PlayerWeaponStates.big;
+                    break;
+                case PlayerWeaponStates.small:
+                    Die();
+                    break;
+            }
+            hurtCountdown = hurtTimer;
+        }
+    }
+
     void Die()
     {
         godObject.GetComponent<GodScript>().lastMehrioState = PlayerWeaponStates.small;
@@ -275,6 +300,57 @@ public class Player : MonoBehaviour {
             fireFlower();
             Destroy(col.gameObject);
         }
+
+        if (col.transform.tag == "Bouncy")
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 9f);
+        }
+
+        if (col.transform.tag == "BigBouncy")
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 13f);
+        }
+
+        DidTouchEnemy(col);
+    }
+
+    void DidTouchEnemy(Collision2D col)
+    {
+
+        if (col.transform.tag == "Enemy")
+        {
+            Vector2 lowestContactPoint = new Vector2(0, 999f);
+
+            foreach (ContactPoint2D mehrioTouch in col.contacts)
+            {
+                if (mehrioTouch.point.y < lowestContactPoint.y)
+                {
+                    lowestContactPoint = mehrioTouch.point;
+                }
+            }
+
+
+
+            if (col.gameObject.transform.position.y < lowestContactPoint.y)
+            {
+                //Touched enemy on top
+                col.gameObject.GetComponent<Enemy>().TakeDamage();
+            }
+            else
+            {
+                Hurt();
+            }
+        }
+    }
+
+    private void OnCollisionStay2D (Collision2D col)
+    {
+        if (col.transform.tag == "BigBouncy")
+        {
+            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(gameObject.GetComponent<Rigidbody2D>().velocity.x, 13f);
+        }
+
+        DidTouchEnemy(col);
     }
 
     private void OnTriggerEnter2D(Collider2D col)

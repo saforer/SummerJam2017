@@ -17,7 +17,7 @@ public class BrickColScript : MonoBehaviour {
 
     public void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.tag == "Player")
+        if (col.transform.tag == "Player")
         {
             Player p = col.GetComponent<Player>();
             if ((p.currentMehrio == PlayerWeaponStates.big) || (p.currentMehrio == PlayerWeaponStates.fireball))

@@ -8,12 +8,22 @@ public class PlayerTracker : MonoBehaviour {
     public Transform player;
     public float speed;
     public float edge;
-    public float leftEdge;
+    float leftEdge;
+    float rightEdge;
 
 	// Use this for initialization
 	void Start () {
         cam = GetComponent<Camera>();
+        leftEdge = 8.04f;
 	}
+
+    public void SetRightEdge(float right)
+    {
+        rightEdge = right;
+        rightEdge *= 1f / 16f;
+        rightEdge -= 20f;
+        rightEdge += 8.04f;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -26,11 +36,17 @@ public class PlayerTracker : MonoBehaviour {
 
             if (percentOnScreen >= edge)
             {
-                transform.position += new Vector3(speed * percentOnScreen, 0, 0);
+                if (transform.position.x < rightEdge)
+                {
+                    transform.position += new Vector3(speed * percentOnScreen * percentOnScreen * percentOnScreen, 0, 0);
+                }
             }
             else if (percentOnScreen <= -edge)
-            {
-                if (transform.position.x > leftEdge) transform.position += new Vector3(speed * percentOnScreen * percentOnScreen * percentOnScreen, 0, 0);
+            {   
+                if (transform.position.x > leftEdge)
+                {
+                        transform.position += new Vector3(speed * percentOnScreen * percentOnScreen * percentOnScreen, 0, 0);
+                }
             }
         } else
         {

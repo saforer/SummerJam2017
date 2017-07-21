@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 public class LevelImport : MonoBehaviour
 {
-    public int _roomWidth;
-    public int _roomHeight;
+    int _roomWidth;
     public int _tileSize;
     public Vector2 MinimapRoomCoordinates;
 
@@ -24,6 +23,11 @@ public class LevelImport : MonoBehaviour
     public GameObject goal;
     public GameObject player;
     public GameObject brick;
+    public GameObject bouncy;
+    public GameObject oneWay;
+    public GameObject peach;
+    public GameObject toad;
+    public GameObject goomba;
 
     private void Start()
     {
@@ -31,7 +35,6 @@ public class LevelImport : MonoBehaviour
         sr = gameObject.GetComponent<SpriteRenderer>();
 
         GetLevel();
-        LoadLevel();
     }
 
 
@@ -41,7 +44,7 @@ public class LevelImport : MonoBehaviour
     }
 
 
-    void LoadLevel()
+    public void LoadLevel()
     {
 
         //First we need the sprite to be right
@@ -53,6 +56,9 @@ public class LevelImport : MonoBehaviour
         Dictionary<string, object> hash = dataAsset.text.dictionaryFromJson();
         
         roomFile = dataAsset.ToString();
+
+        _roomWidth = int.Parse(hash["width"].ToString());
+        _tileSize = int.Parse(hash["tilewidth"].ToString());
 
         List<object> layersList = (List<object>)hash["layers"];
 
@@ -72,7 +78,7 @@ public class LevelImport : MonoBehaviour
 
                     Dictionary<string, object> objHash = (Dictionary<string, object>)objectList[j];
 
-                    
+
                     if (objHash["type"].Equals("Ground") || objHash["type"].Equals(""))
                     {
                         //Debug.Log(objHash["id"] + " " + objHash["type"] + " " + objHash["x"] + " " + objHash["y"] + " " + objHash["width"] + " " + objHash["height"]);
@@ -93,7 +99,7 @@ public class LevelImport : MonoBehaviour
                         yInTiles *= 1.0f / 16.0f;
                         widthInTiles *= 1.0f / 16.0f;
                         heightInTiles *= 1.0f / 16.0f;
-                        
+
                         xInTiles *= .8f;
                         yInTiles *= .8f;
                         widthInTiles *= .8f;
@@ -153,7 +159,7 @@ public class LevelImport : MonoBehaviour
 
                         GameObject _coinBox = Instantiate(coinBox, new Vector2(xInTiles, yInTiles), Quaternion.identity);
                         _coinBox.transform.SetParent(this.transform);
-                        switch(objHash["name"].ToString())
+                        switch (objHash["name"].ToString())
                         {
                             case "InvisCoin":
                                 _coinBox.GetComponent<CoinBlock>().heldItem = Items.Coin;
@@ -194,6 +200,50 @@ public class LevelImport : MonoBehaviour
                         _brick.transform.parent = this.transform;
                     }
 
+                    if (objHash["type"].Equals("Peach"))
+                    {
+                        float xInTiles = float.Parse(objHash["x"].ToString());
+                        float yInTiles = float.Parse(objHash["y"].ToString());
+
+                        yInTiles *= -1f;
+
+                        xInTiles *= 1.0f / 16.0f;
+                        yInTiles *= 1.0f / 16.0f;
+                        xInTiles *= .8f;
+                        yInTiles *= .8f;
+
+                        yInTiles += 13f;
+                        yInTiles -= .65f;
+
+                        xInTiles += .4f;
+
+
+                        GameObject _peach = Instantiate(peach, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                        _peach.transform.parent = this.transform;
+                    }
+
+                    if (objHash["type"].Equals("Toad"))
+                    {
+                        float xInTiles = float.Parse(objHash["x"].ToString());
+                        float yInTiles = float.Parse(objHash["y"].ToString());
+
+                        yInTiles *= -1f;
+
+                        xInTiles *= 1.0f / 16.0f;
+                        yInTiles *= 1.0f / 16.0f;
+                        xInTiles *= .8f;
+                        yInTiles *= .8f;
+
+                        yInTiles += 13f;
+                        yInTiles -= .65f;
+
+                        xInTiles += .4f;
+
+                        //come to see the
+                        GameObject _toad = Instantiate(toad, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                        _toad.transform.parent = this.transform;
+                    }
+
                     if (objHash["type"].Equals("Goal"))
                     {
                         float xInTiles = float.Parse(objHash["x"].ToString());
@@ -216,18 +266,146 @@ public class LevelImport : MonoBehaviour
                         Instantiate(goal, new Vector2(xInTiles, yInTiles), Quaternion.identity);
                     }
 
+                    if (objHash["type"].Equals("Bouncy"))
+                    {
+                        float xInTiles = float.Parse(objHash["x"].ToString());
+                        float yInTiles = float.Parse(objHash["y"].ToString());
+                        float widthInTiles = float.Parse(objHash["width"].ToString());
+                        float heightInTiles = float.Parse(objHash["height"].ToString());
 
+                        xInTiles += widthInTiles / 2;
+                        yInTiles += heightInTiles / 2;
+
+                        yInTiles *= -1f;
+
+                        xInTiles *= 1.0f / 16.0f;
+                        yInTiles *= 1.0f / 16.0f;
+                        widthInTiles *= 1.0f / 16.0f;
+                        heightInTiles *= 1.0f / 16.0f;
+
+                        xInTiles *= .8f;
+                        yInTiles *= .8f;
+                        widthInTiles *= .8f;
+                        heightInTiles *= .8f;
+
+                        yInTiles += 13f;
+
+                        yInTiles -= .2f;
+
+                        GameObject _bouncy = Instantiate(bouncy, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                        _bouncy.transform.parent = this.transform;
+
+                        _bouncy.transform.position = new Vector3(xInTiles, yInTiles);
+                        _bouncy.GetComponent<BoxCollider2D>().size = new Vector2(widthInTiles, heightInTiles);
+                        _bouncy.name = objHash["id"].ToString();
+                    }
+
+
+                    if (objHash["type"].Equals("BigBouncy"))
+                    {
+                        float xInTiles = float.Parse(objHash["x"].ToString());
+                        float yInTiles = float.Parse(objHash["y"].ToString());
+                        float widthInTiles = float.Parse(objHash["width"].ToString());
+                        float heightInTiles = float.Parse(objHash["height"].ToString());
+
+                        xInTiles += widthInTiles / 2;
+                        yInTiles += heightInTiles / 2;
+
+                        yInTiles *= -1f;
+
+                        xInTiles *= 1.0f / 16.0f;
+                        yInTiles *= 1.0f / 16.0f;
+                        widthInTiles *= 1.0f / 16.0f;
+                        heightInTiles *= 1.0f / 16.0f;
+
+                        xInTiles *= .8f;
+                        yInTiles *= .8f;
+                        widthInTiles *= .8f;
+                        heightInTiles *= .8f;
+
+                        yInTiles += 13f;
+
+                        yInTiles -= .2f;
+
+                        GameObject _bouncy = Instantiate(bouncy, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                        _bouncy.transform.parent = this.transform;
+                        _bouncy.transform.tag = "BigBouncy";
+
+                        _bouncy.transform.position = new Vector3(xInTiles, yInTiles);
+                        _bouncy.GetComponent<BoxCollider2D>().size = new Vector2(widthInTiles, heightInTiles);
+                        _bouncy.name = objHash["id"].ToString();
+                    }
+
+                    if (objHash["type"].Equals("OneWay"))
+                    {
+                        GameObject _oneWay;
+                        
+
+                        float xInTiles = float.Parse(objHash["x"].ToString());
+                        float yInTiles = float.Parse(objHash["y"].ToString());
+                        float widthInTiles = float.Parse(objHash["width"].ToString());
+                        float heightInTiles = float.Parse(objHash["height"].ToString());
+
+                        xInTiles += widthInTiles / 2;
+                        yInTiles += heightInTiles / 2;
+
+                        yInTiles *= -1f;
+
+                        xInTiles *= 1.0f / 16.0f;
+                        yInTiles *= 1.0f / 16.0f;
+                        widthInTiles *= 1.0f / 16.0f;
+                        heightInTiles *= 1.0f / 16.0f;
+
+                        xInTiles *= .8f;
+                        yInTiles *= .8f;
+                        widthInTiles *= .8f;
+                        heightInTiles *= .4f;
+
+                        yInTiles += 13f;
+
+                        yInTiles -= .2f;
+
+                        _oneWay = Instantiate(oneWay, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                        _oneWay.transform.parent = this.transform;
+
+                        _oneWay.transform.position = new Vector3(xInTiles, yInTiles);
+                        _oneWay.GetComponent<BoxCollider2D>().size = new Vector2(widthInTiles, heightInTiles);
+                        _oneWay.name = objHash["id"].ToString();
+                    }
+
+                    if (objHash["type"].Equals("Goomba"))
+                    {
+                        float xInTiles = float.Parse(objHash["x"].ToString());
+                        float yInTiles = float.Parse(objHash["y"].ToString());
+
+                        yInTiles *= -1f;
+
+                        xInTiles *= 1.0f / 16.0f;
+                        yInTiles *= 1.0f / 16.0f;
+                        xInTiles *= .8f;
+                        yInTiles *= .8f;
+
+                        yInTiles += 13f;
+                        yInTiles -= .65f;
+                        xInTiles += .4f;
+
+
+                        GameObject _goomba = Instantiate(goomba, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                        _goomba.transform.parent = this.transform;
+                    }
                 }
             }
         }
+
 
         GameObject p = Instantiate(player, new Vector2(1f, 2.9f), Quaternion.identity);
         p.transform.SetParent(gameObject.transform);
 
     }
 
-    void DestroyLevel()
+    public int GetRoomWidth()
     {
-
+        return _roomWidth * _tileSize;
     }
+
 }

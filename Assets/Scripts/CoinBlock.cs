@@ -42,22 +42,25 @@ public class CoinBlock : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (!empty)
+        if (col.transform.tag != "Enemy")
         {
-            if (col.transform.position.y > transform.position.y)
+            if (!empty)
             {
-                movingUp = false;
-            }
-            else
-            {
-                movingUp = true;
-            }
+                if (col.transform.position.y > transform.position.y)
+                {
+                    movingUp = false;
+                }
+                else
+                {
+                    movingUp = true;
+                }
 
-            startPos = transform.position;
-            spawnItem(!movingUp);
-            anim.SetBool("empty", true);
-            moving = true;
-            empty = true;
+                startPos = transform.position;
+                spawnItem(!movingUp);
+                anim.SetBool("empty", true);
+                moving = true;
+                empty = true;
+            }
         }
         
     }

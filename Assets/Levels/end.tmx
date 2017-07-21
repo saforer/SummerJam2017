@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="left-down" width="20" height="16" tilewidth="16" tileheight="16" nextobjectid="20">
+ <tileset firstgid="1" source="tiles.tsx"/>
+ <layer name="Background" width="20" height="16">
+  <data encoding="csv">
+34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,
+34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
+34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
+34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
+34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
+34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
+34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
+34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
+34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
+34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
+34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
+34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
+34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
+34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+</data>
+ </layer>
+ <objectgroup name="ObjectJson" visible="0">
+  <object id="1" type="BigBouncy" x="0" y="224" width="319.5" height="32"/>
+  <object id="4" type="Ground" x="304" y="0" width="16" height="224"/>
+  <object id="5" type="Ground" x="0" y="0" width="16" height="224"/>
+  <object id="6" type="Ground" x="16" y="0" width="288" height="16"/>
+  <object id="9" type="Peach" x="256" y="208" width="16" height="16"/>
+  <object id="13" type="Toad" x="208" y="208" width="16" height="16"/>
+  <object id="14" type="Toad" x="176" y="208" width="16" height="16"/>
+  <object id="15" type="Toad" x="144" y="208" width="16" height="16"/>
+  <object id="16" type="Toad" x="112" y="208" width="16" height="16"/>
+  <object id="17" type="Toad" x="160" y="208" width="16" height="16"/>
+  <object id="18" type="Toad" x="128" y="208" width="16" height="16"/>
+  <object id="19" type="Toad" x="192" y="208" width="16" height="16"/>
+ </objectgroup>
+</map>
