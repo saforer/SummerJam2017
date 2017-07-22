@@ -316,7 +316,6 @@ public class Player : MonoBehaviour {
 
     void DidTouchEnemy(Collision2D col)
     {
-
         if (col.transform.tag == "Enemy")
         {
             Vector2 lowestContactPoint = new Vector2(0, 999f);
@@ -355,6 +354,12 @@ public class Player : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+
+        if (col.transform.tag == "Plant")
+        {
+            Hurt();
+        }
+
         if (col.transform.tag == "Goal")
         {
             EndLevel();

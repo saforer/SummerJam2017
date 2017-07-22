@@ -18,7 +18,7 @@
          "name":"ObjectTiles",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":128,
          "x":0,
          "y":0
@@ -785,14 +785,25 @@
                  "width":16,
                  "x":256,
                  "y":160
+                }, 
+                {
+                 "height":16,
+                 "id":116,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Plant",
+                 "visible":true,
+                 "width":16,
+                 "x":320,
+                 "y":176
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }],
- "nextobjectid":116,
+ "nextobjectid":117,
  "orientation":"orthogonal",
  "renderorder":"left-down",
  "tiledversion":"1.0.2",

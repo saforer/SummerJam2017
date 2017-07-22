@@ -28,6 +28,7 @@ public class LevelImport : MonoBehaviour
     public GameObject peach;
     public GameObject toad;
     public GameObject goomba;
+    public GameObject plant;
 
     private void Start()
     {
@@ -220,6 +221,30 @@ public class LevelImport : MonoBehaviour
 
                         GameObject _peach = Instantiate(peach, new Vector2(xInTiles, yInTiles), Quaternion.identity);
                         _peach.transform.parent = this.transform;
+                    }
+
+                    if (objHash["type"].Equals("Plant"))
+                    {
+                        float xInTiles = float.Parse(objHash["x"].ToString());
+                        float yInTiles = float.Parse(objHash["y"].ToString());
+
+                        yInTiles *= -1f;
+
+                        xInTiles *= 1.0f / 16.0f;
+                        yInTiles *= 1.0f / 16.0f;
+                        xInTiles *= .8f;
+                        yInTiles *= .8f;
+
+                        yInTiles += 13f;
+                        yInTiles -= .65f;
+
+                        xInTiles += .8f;
+                        yInTiles += .25f;
+
+
+                        GameObject _plant = Instantiate(plant, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                        _plant.transform.parent = this.transform;
+
                     }
 
                     if (objHash["type"].Equals("Toad"))

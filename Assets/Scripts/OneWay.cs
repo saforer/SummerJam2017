@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class OneWay : MonoBehaviour {
     GameObject p; //Player
-    Collider2D col;
+    Collider2D coll;
 
 	// Use this for initialization
 	void Start () {
 
-        col = gameObject.GetComponent<BoxCollider2D>();
+        coll = gameObject.GetComponent<BoxCollider2D>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	/*void Update () {
         if (p==null)
         {
             try
@@ -39,5 +39,10 @@ public class OneWay : MonoBehaviour {
                 col.enabled = false;
             }
         }
-	}
+	}*/
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        
+    }
 }
