@@ -10,10 +10,15 @@ public class GodScript : MonoBehaviour {
     float restartTimer = 10f;
     float restartCount = 0;
 
-    
+
+
+
+
 
     public List<Sprite> levelPic = new List<Sprite>();
-    public List<TextAsset> levelData = new List<TextAsset>();
+    public List<TextAsset> levelDat = new List<TextAsset>();
+
+
     int currentLevel = 0;
 
     PlayerTracker pt;
@@ -53,8 +58,8 @@ public class GodScript : MonoBehaviour {
 
     public void GetRoomData(LevelImport li)
     {
-        li.dataAsset = levelData[currentLevel];
-        li.currentSprite = levelPic[currentLevel];
+        li.dataAsset = (TextAsset) levelDat[currentLevel];
+        li.currentSprite = (Sprite) levelPic[currentLevel];
         li.LoadLevel();
         pt = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PlayerTracker>();
         pt.SetRightEdge(li.GetRoomWidth());
@@ -76,4 +81,17 @@ public class GodScript : MonoBehaviour {
         RestartCountdown();
     }
 
+}
+
+[System.Serializable]
+public class Level
+{
+    public Sprite levelPic;
+    public TextAsset levelData;
+
+    public Level(Sprite s, TextAsset t)
+    {
+        this.levelPic = s;
+        this.levelData = t;
+    }
 }

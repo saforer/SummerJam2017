@@ -82,20 +82,14 @@ public class Player : MonoBehaviour {
         {
             Die();
         }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            godObject.GetComponent<GodScript>().RestartLevel();
-        }
-
-
+        
         //if (Input.GetAxis ("Vertical") > 0.3f)
-        if (Input.GetKey(KeyCode.Z))
+        if (Input.GetButton("Jump"))
         {
             JumpMehrio();
         }
 
-        if (Input.GetKey(KeyCode.X))
+        if (Input.GetButton("Fire"))
         {
             if (currentMehrio == PlayerWeaponStates.fireball)
             {
