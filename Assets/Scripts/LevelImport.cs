@@ -13,6 +13,7 @@ public class LevelImport : MonoBehaviour
     string roomName;
     string roomFile;
     public List<BoxCollider2D> collisionBoxList = new List<BoxCollider2D>();
+    public bool isFirstLevel = false;
 
 
     GodScript gs;
@@ -29,6 +30,10 @@ public class LevelImport : MonoBehaviour
     public GameObject toad;
     public GameObject goomba;
     public GameObject plant;
+    public GameObject score;
+    public GameObject coincounter;
+    public GameObject world;
+    public GameObject time;
 
     private void Start()
     {
@@ -361,6 +366,41 @@ public class LevelImport : MonoBehaviour
                         _bouncy.name = objHash["id"].ToString();
                     }
 
+                    if (objHash["type"].Equals("SuperBouncy"))
+                    {
+                        float xInTiles = float.Parse(objHash["x"].ToString());
+                        float yInTiles = float.Parse(objHash["y"].ToString());
+                        float widthInTiles = float.Parse(objHash["width"].ToString());
+                        float heightInTiles = float.Parse(objHash["height"].ToString());
+
+                        xInTiles += widthInTiles / 2;
+                        yInTiles += heightInTiles / 2;
+
+                        yInTiles *= -1f;
+
+                        xInTiles *= 1.0f / 16.0f;
+                        yInTiles *= 1.0f / 16.0f;
+                        widthInTiles *= 1.0f / 16.0f;
+                        heightInTiles *= 1.0f / 16.0f;
+
+                        xInTiles *= .8f;
+                        yInTiles *= .8f;
+                        widthInTiles *= .8f;
+                        heightInTiles *= .8f;
+
+                        yInTiles += 13f;
+
+                        yInTiles -= .2f;
+
+                        GameObject _bouncy = Instantiate(bouncy, new Vector2(xInTiles, yInTiles), Quaternion.identity);
+                        _bouncy.transform.parent = this.transform;
+                        _bouncy.transform.tag = "SuperBouncy";
+
+                        _bouncy.transform.position = new Vector3(xInTiles, yInTiles);
+                        _bouncy.GetComponent<BoxCollider2D>().size = new Vector2(widthInTiles, heightInTiles);
+                        _bouncy.name = objHash["id"].ToString();
+                    }
+
                     if (objHash["type"].Equals("OneWay"))
                     {
                         GameObject _oneWay;
@@ -420,6 +460,16 @@ public class LevelImport : MonoBehaviour
                     }
                 }
             }
+        }
+
+
+
+        if (isFirstLevel)
+        {
+            Instantiate(score, new Vector2(2f, 11.4f), Quaternion.identity);
+            Instantiate(coincounter, new Vector2(6f, 11.4f), Quaternion.identity);
+            Instantiate(world, new Vector2(10f, 11.4f), Quaternion.identity);
+            Instantiate(time, new Vector2(14f, 11.4f), Quaternion.identity);
         }
 
 

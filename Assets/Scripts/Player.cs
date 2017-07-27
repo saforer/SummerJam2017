@@ -12,6 +12,7 @@ public class Player : MonoBehaviour {
 
     bool jumped = false;
     bool facingRight = true;
+    bool justEnding = false;
 
     public float deathJumpForce;
 
@@ -147,6 +148,11 @@ public class Player : MonoBehaviour {
     {
         if (endingLevel)
         {
+            if (justEnding)
+            {
+                justEnding = false;
+                godObject.GetComponent<GodScript>().beatLevelAudio();
+            }
             if (transform.position.y > 2.9f)
             {
                 //move down
@@ -305,6 +311,12 @@ public class Player : MonoBehaviour {
             rb.velocity = new Vector2(rb.velocity.x, 13f);
         }
 
+
+        if (col.transform.tag == "SuperBouncy")
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 20f);
+        }
+
         DidTouchEnemy(col);
     }
 
@@ -354,7 +366,7 @@ public class Player : MonoBehaviour {
             Hurt();
         }
 
-        if (col.transform.tag == "Goal")
+        if (col.transform.tag == "Goal" && !endingLevel)
         {
             EndLevel();
         }
@@ -363,8 +375,10 @@ public class Player : MonoBehaviour {
 
     void EndLevel()
     {
+        
         rb.velocity = Vector2.zero;
         endingLevel = true;
+        justEnding = true;
         rb.simulated = false;
     }
 }

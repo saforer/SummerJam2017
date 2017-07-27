@@ -34,7 +34,7 @@ public class PlayerTracker : MonoBehaviour {
             percentOnScreen -= .50f;
             percentOnScreen *= 2f;
 
-            if (percentOnScreen >= edge)
+            if (percentOnScreen >= .0f)
             {
                 if (transform.position.x < rightEdge)
                 {

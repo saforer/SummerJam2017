@@ -7,24 +7,26 @@ public class GodScript : MonoBehaviour {
     bool isReal = false;
     bool restarting = false;
 
-    float restartTimer = 10f;
+    float restartTimer = 3.2f;
     float restartCount = 0;
 
 
-
+    public AudioClip endingSong;
 
 
 
     public List<Sprite> levelPic = new List<Sprite>();
     public List<TextAsset> levelDat = new List<TextAsset>();
+    public List<AudioClip> musicToUse = new List<AudioClip>();
 
 
-    int currentLevel = 0;
+    public int currentLevel = 0;
 
     PlayerTracker pt;
 
     public void Start()
     {
+
         if (GameObject.FindGameObjectsWithTag("GodObject").Length>1)
         {
             if (!isReal)
@@ -60,9 +62,18 @@ public class GodScript : MonoBehaviour {
     {
         li.dataAsset = (TextAsset) levelDat[currentLevel];
         li.currentSprite = (Sprite) levelPic[currentLevel];
+        gameObject.GetComponent<AudioSource>().clip = musicToUse[currentLevel];
+        li.isFirstLevel = currentLevel == 0 ? true : false;
         li.LoadLevel();
         pt = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PlayerTracker>();
         pt.SetRightEdge(li.GetRoomWidth());
+        gameObject.GetComponent<AudioSource>().loop = true;
+        gameObject.GetComponent<AudioSource>().Play();        
+    }
+
+    public void deadStopMusic()
+    {
+        gameObject.GetComponent<AudioSource>().Stop();
     }
 
     public void RestartCountdown()
@@ -72,7 +83,15 @@ public class GodScript : MonoBehaviour {
 
     public void RestartLevel()
     {
+        gameObject.GetComponent<AudioSource>().Stop();
         UnityEngine.SceneManagement.SceneManager.LoadScene("Game", UnityEngine.SceneManagement.LoadSceneMode.Single);
+    }
+
+    public void beatLevelAudio()
+    {
+        Debug.Log("Played Sound");
+        gameObject.GetComponent<AudioSource>().Stop();
+        gameObject.GetComponent<AudioSource>().PlayOneShot(endingSong);
     }
 
     public void NextLevel()

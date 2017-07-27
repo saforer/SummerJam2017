@@ -1,0 +1,170 @@
+fileFormatVersion: 2
+guid: 04e593bef9d8a2b4bacce76d42a97fac
+timeCreated: 1501153958
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: smb-hud_0
+    21300002: smb-hud_1
+    21300004: smb-hud_2
+    21300006: smb-hud_3
+    21300008: smb-hud_4
+    21300010: smb-hud_5
+    21300012: smb-hud_6
+    21300014: smb-hud_7
+    21300016: smb-hud_8
+    21300018: smb-hud_9
+    21300020: smb-hud_10
+    21300022: smb-hud_11
+    21300024: smb-hud_12
+    21300026: smb-hud_13
+    21300028: smb-hud_14
+    21300030: smb-hud_15
+    21300032: smb-hud_16
+    21300034: smb-hud_17
+    21300036: smb-hud_18
+    21300038: smb-hud_19
+    21300040: smb-hud_20
+    21300042: smb-hud_21
+    21300044: smb-hud_22
+    21300046: smb-hud_23
+    21300048: smb-hud_24
+    21300050: smb-hud_25
+    21300052: smb-hud_26
+    21300054: smb-hud_27
+    21300056: smb-hud_28
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 20
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 256
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 256
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: smb-hud_16
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 17
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: smb-hud_0
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 17
+        width: 30
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: smb-hud_1
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 17
+        width: 39
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: smb-hud_2
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 16
+        width: 30
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: smb-hud_3
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 17
+        width: 47
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
