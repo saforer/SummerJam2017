@@ -56,6 +56,11 @@ public class GodScript : MonoBehaviour {
                 RestartLevel();
             }
         }
+
+        if ((currentLevel == 6) && (Input.GetButtonDown("Reset")))
+        {
+            RestartEntireGame();
+        }
     }
 
     public void GetRoomData(LevelImport li)
@@ -98,6 +103,15 @@ public class GodScript : MonoBehaviour {
     {
         currentLevel++;
         RestartCountdown();
+    }
+
+
+
+    public void RestartEntireGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("OpeningScene", UnityEngine.SceneManagement.LoadSceneMode.Single);
+        Destroy(gameObject);
+
     }
 
 }

@@ -77,7 +77,7 @@ public class CreditsSpawn : MonoBehaviour {
                         toSpawn = 2;
                         break;
                     case CreditsState.Thanksto:
-                        toSpawn = 10;
+                        toSpawn = 11;
                         break;
                 }
 
@@ -105,10 +105,10 @@ public class CreditsSpawn : MonoBehaviour {
                         toSpawn = 2;
                         break;
                     case CreditsState.Thanksto:
-                        toSpawn = 10;
+                        toSpawn = 11;
                         break;
                     case CreditsState.PressJump:
-                        toSpawn = 21;
+                        toSpawn = 22;
                         break;
                 }
                 GameObject o = Instantiate(getObjectViaNumber(toSpawn), randomPos(getObjectViaNumber(toSpawn)), Quaternion.identity);
@@ -126,7 +126,7 @@ public class CreditsSpawn : MonoBehaviour {
                 {
                     if (!breakEverything)
                     {
-                        Instantiate(getObjectViaNumber(21), randomPos(getObjectViaNumber(21)), Quaternion.identity);
+                        Instantiate(getObjectViaNumber(22), randomPos(getObjectViaNumber(22)), Quaternion.identity);
                         breakEverything = true;
                     }
                 }
@@ -175,7 +175,7 @@ public class CreditsSpawn : MonoBehaviour {
         {
             default:
             case CreditsState.AdditionalLevels:
-                additionalAfterTitle = 7;
+                additionalAfterTitle = 8;
                 return CreditsState.Playtesters;
             case CreditsState.Playtesters:
                 additionalAfterTitle = 10;
